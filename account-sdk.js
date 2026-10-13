@@ -69,6 +69,16 @@
     /** 轉到帳號中心登入，登入後回到目前頁面 */
     goLogin: function () { location.href = CENTER_URL + "?back=" + encodeURIComponent(location.href); },
 
+    /** 呼叫帳號中心後端（自動帶上登入憑證），例如 ACCOUNT.api("boardList") */
+    api: function (action, body) {
+      body = Object.assign({}, body || {});
+      var t = ACCOUNT.token(); if (t && !body.token) body.token = t;
+      return call(action, body);
+    },
+
+    /** 帳號中心網址（給「我的帳號」連結用） */
+    centerUrl: CENTER_URL,
+
     logout: function () { var t = ACCOUNT.token(); save(null); if (t) call("logout", { token: t }).catch(function () {}); }
   };
 
